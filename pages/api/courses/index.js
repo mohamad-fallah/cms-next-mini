@@ -3,7 +3,16 @@ import coursesModel from "@/models/course";
 
 const handler = async (req, res) => {
   connectToDb();
-  if (req.method === "POST") {
+  if (req.method === "GET") {
+    if (req.query.q) {
+      const { q } = req.query;
+      const courses = await coursesModel.find({ title: { $regex: q } });
+      res.json(courses)
+    } else {
+      const courses = await coursesModel.find({});
+      return res.json(courses);
+    }
+  } else if (req.method === "POST") {
     try {
       const { title } = req.body;
 

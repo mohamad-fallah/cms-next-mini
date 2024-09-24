@@ -5,8 +5,18 @@ import styles from "@/styles/Course.module.css";
 
 const Course = ({ datas }) => {
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [data , setData ] = useState([...datas])
 
   const hideAddCourseModal = () => setShowAddCourseModal(false);
+
+  const getCourses = async () => {
+    const res = await fetch(`/api/courses`) 
+    const coursesData = await res.json()
+
+    if (res.status === 200) {
+      setData(coursesData)
+    }
+  };
 
   return (
     <>
@@ -22,14 +32,14 @@ const Course = ({ datas }) => {
           </a>
         </div>
         <ul className={styles.courses_list}>
-          {datas.map((data) => (
+          {data.map((data) => (
             <CoursesItem {...data} />
           ))}
         </ul>
       </section>
 
       {showAddCourseModal && (
-        <AddCourseModal hideAddCourseModal={hideAddCourseModal} />
+        <AddCourseModal showNewData={getCourses} hideAddCourseModal={hideAddCourseModal} />
       )}
     </>
   );

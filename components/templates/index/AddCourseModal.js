@@ -11,7 +11,7 @@ import {
 import styles from "@/styles/Modal.module.css";
 import { useState } from "react";
 
-const AddCourseModal = ({ hideAddCourseModal }) => {
+const AddCourseModal = ({ hideAddCourseModal, showNewData }) => {
   const [title, setTitle] = useState("");
 
   const addNewCourse = async (event) => {
@@ -26,6 +26,7 @@ const AddCourseModal = ({ hideAddCourseModal }) => {
     });
 
     if (res.status === 201) {
+      showNewData()
       setTitle("");
       hideAddCourseModal();
     }

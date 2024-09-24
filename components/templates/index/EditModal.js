@@ -2,26 +2,38 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCashRegister, faTag, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCashRegister,
+  faTag,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "@/styles/Modal.module.css";
+import { useState } from "react";
 
-const EditModal = ({ hideEditModal }) => {
-    return (
-        <div className={styles.modal_container} id="edit-modal">
-            <div className={styles.modal_bg} onClick={hideEditModal}></div>
-            <div className={styles.modal_content}>
+const EditModal = ({ hideEditModal, edit }) => {
+  const [title, setTitle] = useState("");
 
-                <h1 className={styles.modal_title}>اطلاعات جدید را وارد کنید</h1>
-                <form action="#" className={styles.edit_user_form}>
-                    <div className={styles.input_field}>
-                        <span><FontAwesomeIcon icon={faTag} /></span>
-                        <input
-                            type="text" 
-                            placeholder="نام دوره"
-                            spellcheck="false"
-                        />
-                    </div>
-                    <div className={styles.input_field}>
+  return (
+    <div className={styles.modal_container} id="edit-modal">
+      <div className={styles.modal_bg} onClick={hideEditModal}></div>
+      <div className={styles.modal_content}>
+        <h1 className={styles.modal_title}>اطلاعات جدید را وارد کنید</h1>
+        <form action="#" className={styles.edit_user_form}>
+          <div className={styles.input_field}>
+            <span>
+              <FontAwesomeIcon icon={faTag} />
+            </span>
+            <input
+              type="text"
+              placeholder="نام جدید دوره"
+              spellcheck="false"
+              value={title}
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
+            />
+          </div>
+          {/* <div className={styles.input_field}>
                         <span><FontAwesomeIcon icon={faCashRegister} /> </span>
                         <input
                             type="text" 
@@ -36,15 +48,20 @@ const EditModal = ({ hideEditModal }) => {
                             placeholder="مدرس دوره"
                             spellcheck="false"
                         />
-                    </div>
+                    </div> */}
+          <button
+            type="submit"
+            className={styles.update_btn}
+            onClick={(event) => {
+              edit(event, title);
+            }}
+          >
+            اپدیت دوره
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-                    <button type="submit" className={styles.update_btn }>
-                        اپدیت دوره
-                    </button>
-                </form>
-            </div>
-        </div>
-    )
-}
-
-export default EditModal
+export default EditModal;

@@ -9,16 +9,34 @@ const CoursesItem = ({ title, image, _id }) => {
   const hideEditModal = () => setShowEditModal(false);
   const hideDeleteModal = () => setShowDeleteModal(false);
 
+  //delete
   const removeCourse = async () => {
     const res = await fetch(`/api/courses/${_id}`, {
       method: "DELETE",
-    })
-    const data = await res.json()
+    });
+    const data = await res.json();
 
     if (res.status === 200) {
-      hideDeleteModal(false)
+      setShowDeleteModal(false);
     }
-  }
+  };
+
+  // edit
+  const updateCourse = async (event ,title) => {
+    event.preventDefault()
+    const res = await fetch(`/api/courses/${_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: title }),
+    });
+    const data = await res.json();
+
+    if (res.status === 200) {
+      setShowEditModal(false);
+    }
+  };
 
   return (
     <>
@@ -50,8 +68,12 @@ const CoursesItem = ({ title, image, _id }) => {
           </a>
         </div>
       </li>
-      {showEditModal && <EditModal hideEditModal={hideEditModal} />}
-      {showDeleteModal && <DeleteModal remove={removeCourse} hideDeleteModal={hideDeleteModal} />}
+      {showEditModal && (
+        <EditModal edit={updateCourse} hideEditModal={hideEditModal} />
+      )}
+      {showDeleteModal && (
+        <DeleteModal remove={removeCourse} hideDeleteModal={hideDeleteModal} />
+      )}
     </>
   );
 };
